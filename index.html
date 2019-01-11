@@ -1,0 +1,60 @@
+<html>
+<head>
+<style>
+#map {
+	width: 100%;
+	height: 400px;
+	background-color: grey;
+}
+</style>
+	<title>My map</title>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+<body>
+	My Google Map
+<div id="map">
+<script>
+//Create a map
+	function initMap() {
+		var nottingham = {lat: 52.9547832, lng: -1.1581086};
+		var map = new google.maps.Map(document.getElementById('map'), {
+			zoom: 10,
+			center: nottingham
+		});
+//Set up a geocoder to find lat/lng from addresses
+	var geocoder = new google.maps.Geocoder();
+	//Access JSON file through server
+	var data_file = "http://localhost:8000/penalties.json";
+	//function retrieves JSON data through a loop
+	$.getJSON(data_file, function(data){
+		$.each(data, function(i){
+			var incident_location = data[i]["Street"] + ", Nottingham, UK";
+			//Stop after 10 items
+			if(i == 10){ return false; }
+			
+			//Using geocoder, find lat/lng of incident_location
+			//Create a marker and add to map	
+			geocoder.geocode( { 'address': incident_location }, function(results) {
+				var emoji = 'poop.png';
+				//If violation is for litter, use different marker icon
+				if(data[i]["Contravention_Description"].toLowerCase() == "leaving litter"){
+					emoji = 'litter.png';
+				}
+				var marker = new google.maps.Marker({
+					map: map,
+					position: results[0].geometry.location,
+					animation: google.maps.Animation.DROP,
+					icon: emoji,
+					title: data[i]["Contravention_Description"]
+				});
+			});
+		});
+	});
+}
+</script>
+</div>
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-cDbtaUJE2eMbJRky1xfKcT5u9NIY7SA&callback=initMap" type="text/javascript">
+</script>
+</body>
+</html>
