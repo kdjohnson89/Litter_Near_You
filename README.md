@@ -28,7 +28,7 @@ Obtain a Google Maps API key:
 - Find the part in the code you just pasted which says YOUR_API_KEY, and replace it with the API key you’ve generated. Make sure there are no spaces between the key you paste in and the = and & characters on each side of it.
 
 In your terminal, setup a local web server in the project folder directory:
- -Windows: `python -m http.server`
- -Raspberry Pi and Mac: `python3 -m http.server`
+ - Windows: `python -m http.server`
+ - Raspberry Pi and Mac: `python3 -m http.server`
  
 Open your web browser and type http://localhost:8000/index.html. Press enter.
